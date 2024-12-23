@@ -3,7 +3,6 @@ package com.example.graduation_project;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +20,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import androidx.annotation.NonNull;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,11 +37,13 @@ import okhttp3.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import com.example.graduation_project.ImageUploader;
+import com.example.graduation_project.UploadCallback;
 
 
 public class ScanActivity extends AppCompatActivity {
 
-     private String classificationResult = null;
+      String classificationResult = null;
 
      private static final int CAMERA_REQUEST_CODE = 100;
      private static final int GALLERY_REQUEST_CODE = 200;
@@ -82,31 +85,34 @@ public class ScanActivity extends AppCompatActivity {
         Start_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (classificationResult == null) {
-                    // لم يتم رفع الصورة أو لم يصل الرد بعد.
-                    // يمكنك إعلام المستخدم بضرورة رفع الصورة قبل الاستمرار
+                // التحقق أولاً: إذا النتيجة فارغة أو لم يتم تعيينها
+                if (classificationResult == null || classificationResult.trim().isEmpty()) {
                     Toast.makeText(ScanActivity.this,
-                            "No result yet! Take a photo or wait a while.",
+                            "No result yet! Please capture an image or wait a while.",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // إذا وصلت قيمة ما في classificationResult
+                // التحقق من نوع النتيجة
                 if (classificationResult.equalsIgnoreCase("Benign")) {
+                    // التوجيه لـ ResultActivity
                     Intent intent = new Intent(ScanActivity.this, ResultActivity.class);
                     startActivity(intent);
 
                 } else if (classificationResult.equalsIgnoreCase("Malignant")) {
+                    // التوجيه لـ ResultActivity2
                     Intent intent = new Intent(ScanActivity.this, ResultActivity2.class);
                     startActivity(intent);
+
                 } else {
-                    // لو فرضاً رجعت قيمة مختلفة
+                    // قيمة غير معروفة
                     Toast.makeText(ScanActivity.this,
                             "Unknown value: " + classificationResult,
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         home_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +176,9 @@ public class ScanActivity extends AppCompatActivity {
                         Bitmap imageBitmap = (Bitmap) extras.get("data");
                         imageView.setImageBitmap(imageBitmap);
 
-                        sendImageToServer(imageBitmap);
+                        sendImage(imageBitmap);
+
+
                     }
                 }
             } else if (requestCode == GALLERY_REQUEST_CODE) {
@@ -180,7 +188,8 @@ public class ScanActivity extends AppCompatActivity {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     imageView.setImageBitmap(bitmap);
 
-                    sendImageToServer(bitmap);
+                    sendImage(bitmap);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -188,99 +197,62 @@ public class ScanActivity extends AppCompatActivity {
         }
     }
 
-    private byte[] bitmapToByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // اضغط الصورة بصيغة JPEG وبجودة 100% (يمكنك تقليل الجودة للحدّ من حجم الملف)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-        return stream.toByteArray();
-    }
+    private void sendImage(Bitmap bitmap) {
+        // مثال على رابط السيرفر
+        String serverUrl = "http://192.168.1.7:5000/predict";
 
-    private void sendImageToServer(Bitmap bitmap) {
-        // 1) تحويل الـ Bitmap إلى مصفوفة بايت
-        byte[] imageBytes = bitmapToByteArray(bitmap);
-
-        // 2) بناء الـ RequestBody من نوع image/jpeg
-        RequestBody requestFile = RequestBody.create(
-                imageBytes,
-                MediaType.parse("image/jpeg")
-        );
-
-        // 3) إضافة الجزء الخاص بالملف (FormData)
-        MultipartBody.Part body = MultipartBody.Part.createFormData(
-                "file",         // اسم الحقل الذي سيرسله للفلاسك (مثل request.files['image'])
-                "upload.jpg",    // اسم الملف (صوري، ليس إلزاميًا)
-                requestFile
-        );
-
-        // تستطيع هنا إضافة حقول إضافية لو كانت مطلوبة في الـ Flask
-        // (مثلاً اسم المستخدم أو أي بيانات نصية أخرى)
-
-        // 4) بناء كائن OkHttpClient
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build();
-
-
-        // 5) بناء الـ requestBody الشامل (multipart)
-        MultipartBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addPart(body)
-                .build();
-
-        // 6) بناء الـ Request وتحديد الرابط (URL)
-        // يجب تغيير الرابط لعنوان السيرفر (قد يكون http://192.168.x.x:5000/predict أو http://10.0.2.2:5000/predict إذا كنت على Emulator)
-        Request request = new Request.Builder()
-                .url("http://192.168.1.7:5000/predict")
-                .post(requestBody)
-                .build();
-
-        // 7) تنفيذ الطلب بشكل غير متزامن (Asynchronous) حتى لا تعلق واجهة المستخدم
-        client.newCall(request).enqueue(new Callback() {
+        ImageUploader.uploadImageAsync(bitmap, serverUrl, new UploadCallback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                // في حال فشل الاتصال أو أي خطأ بالشبكة
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Log.e("HTTP_ERROR", "Response code: " + response.code());
-                    runOnUiThread(() -> Toast.makeText(ScanActivity.this,
-                            "Server error, code = " + response.code(),
-                            Toast.LENGTH_SHORT).show());
-
-                // قراءة محتوى الرد (عادة يكون جيسون)
-                    assert response.body() != null;
-                    String responseBody = response.body().string();
-
+            public void onSuccess(String responseBody) {
+                // ينفّذ في Thread الخلفية (تحذير)
+                // لو أردت تعديل الواجهة (UI)، استخدم runOnUiThread
+                runOnUiThread(() -> {
+                    // معالجة النتيجة
+                    Toast.makeText(ScanActivity.this,
+                            "Upload success: " + responseBody,
+                            Toast.LENGTH_LONG).show();
                     try {
-                        JSONObject jsonObject = new JSONObject(responseBody);
-                        double confidence = jsonObject.getDouble("confidence");
-                        // بافتراض أن السيرفر يعيد حقل "label" بقيمة "Benign" أو "Malignant"
-                        String label = jsonObject.getString("label");
+                        JSONObject json = new JSONObject(responseBody);
+                        String label = json.optString("label", "");
+                        double confidence = json.optDouble("confidence", 0.0);
 
-                        // احفظ النتيجة في المتغيّر العام
-                        classificationResult = label;
+                        // تعيين قيمة classificationResult اعتمادًا على label
+                        classificationResult = label; // قد تكون "Benign" أو "Malignant"
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(ScanActivity.this,
-                                        "Result: " + label + " (Confidence: " + confidence + ")",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        // إذا أردت إظهار القيمة
+                        // Toast.makeText(ScanActivity.this,
+                        //         "classificationResult = " + classificationResult,
+                        //         Toast.LENGTH_SHORT).show();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(ScanActivity.this,
+                                "JSON parsing error: " + e.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
-                }
+
+                    // يمكنك هنا أو في زرّ آخر استخدام classificationResult للانتقال:
+                    // if ("Benign".equalsIgnoreCase(classificationResult)) { ... }
+                });
+            }
+
+                    // مثال: لو لديك parse JSON
+                    // then navigate to other activity, etc.
+
+
+            @Override
+            public void onError(Exception e) {
+                // نفس الشيء، نفذ على الرئيسية لو أردت:
+                runOnUiThread(() -> {
+                    Toast.makeText(ScanActivity.this,
+                            "Upload error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
             }
         });
     }
+
+
 
 
 

@@ -97,6 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
                                                     Toast.makeText(SignUpActivity.this,
                                                             "Verification email sent to " + user.getEmail(),
                                                             Toast.LENGTH_SHORT).show();
+
                                                 } else {
                                                     Toast.makeText(SignUpActivity.this,
                                                             "Failed to send verification email.",
