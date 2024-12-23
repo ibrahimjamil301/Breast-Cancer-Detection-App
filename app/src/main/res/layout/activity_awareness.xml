@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AwarenessActivity"
+    android:background="#FBD5DF"
+    >
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/logo2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        tools:ignore="ContentDescription"
+        />
+
+    <TextView
+        android:id="@+id/patient_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/awareness"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="110dp"
+        android:textSize="35sp"
+        android:textStyle="normal|bold"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/Awareness_tv"
+        android:layout_width="380dp"
+        android:layout_height="130dp"
+        android:text="@string/p1"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patient_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:textSize="25sp"
+        android:textStyle="normal|bold"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p2"
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:text="@string/p2"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Awareness_tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p3"
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:text="@string/p3"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p4"
+        android:layout_width="380dp"
+        android:layout_height="70dp"
+        android:text="@string/p4"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p3"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p5"
+        android:layout_width="380dp"
+        android:layout_height="70dp"
+        android:text="@string/p5"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p4"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p6"
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:text="@string/p6"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p5"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p7"
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:text="@string/p7"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p6"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:id="@+id/p8"
+        android:layout_width="380dp"
+        android:layout_height="50dp"
+        android:text="@string/p8"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p7"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="normal"
+        android:textColor="@color/pink"
+        />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        app:layout_constraintTop_toBottomOf="@+id/p8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/background_home_icons"
+        />
+
+    <ImageView
+        android:id="@+id/home_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/home_img"
+        app:layout_constraintTop_toBottomOf="@+id/p8"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="65dp"
+        android:layout_marginStart="80dp"
+        tools:ignore="ContentDescription"
+        />
+
+    <ImageView
+        android:id="@+id/doc_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/doc_img"
+        app:layout_constraintTop_toBottomOf="@+id/p8"
+        app:layout_constraintStart_toStartOf="@+id/home_icon"
+        android:layout_marginTop="65dp"
+        android:layout_marginStart="100dp"
+        tools:ignore="ContentDescription"
+        />
+
+    <ImageView
+        android:id="@+id/profile_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/profile_img"
+        app:layout_constraintTop_toBottomOf="@+id/p8"
+        app:layout_constraintStart_toStartOf="@+id/doc_icon"
+        android:layout_marginTop="65dp"
+        android:layout_marginStart="100dp"
+        tools:ignore="ContentDescription"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

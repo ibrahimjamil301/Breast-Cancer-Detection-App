@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/background"
+        tools:ignore="MissingConstraints"
+
+        />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/back_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/back_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        app:shapeAppearanceOverlay="@style/curcular"
+        android:background="@color/white"
+
+        />
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/logo2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        tools:ignore="ContentDescription"
+        />
+
+    <ImageView
+        android:id="@+id/profile_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="130dp"
+        android:src="@drawable/profile_ph"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Name"
+        android:textSize="24sp"
+        android:textColor="@color/pink_dark"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profile_img"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <TextView
+        android:id="@+id/Emailtv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="youremail@gmail.com"
+        android:textSize="14sp"
+        android:textColor="@color/pink_dark"
+        android:textStyle="normal"
+        app:layout_constraintTop_toBottomOf="@id/full_name"
+        app:layout_constraintStart_toEndOf="@id/profile_img"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/full_name"
+        tools:ignore="MissingConstraints"
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_img"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:endIconMode="clear_text"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Full_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="fullnameuser"
+            android:drawablePadding="101dp"/>
+
+
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/email"
+        tools:ignore="MissingConstraints"
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Full_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:endIconMode="clear_text"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Email_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="email"
+            android:inputType="textEmailAddress"
+            android:drawablePadding="101dp"/>
+
+
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/Pass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/pass"
+        tools:ignore="MissingConstraints"
+        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Email"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:endIconMode="password_toggle"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Pass_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="101dp"
+            android:inputType="textPassword"
+            android:text="email"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/update_btn"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:text="@string/update"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        tools:ignore="MissingConstraints"
+        android:backgroundTint="@color/pink_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Pass"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="180dp"
+        />
+
+    <Button
+        android:id="@+id/logout_btn"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="@string/log_out"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        tools:ignore="MissingConstraints"
+        android:backgroundTint="@color/gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Pass"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="250dp"
+        />
+
+    <Button
+        android:id="@+id/deleteAccount"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:text="@string/delete_account"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        tools:ignore="MissingConstraints"
+        android:backgroundTint="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logout_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+   
+
+
