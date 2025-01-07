@@ -1,4 +1,4 @@
-package com.example.graduation_project;
+package com.example.Breast_Cancer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,23 +9,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
-
      FirebaseAuth mAuth;
      FirebaseFirestore db;
      ImageView back_btn,profile_btn_update;
@@ -33,8 +29,6 @@ public class ProfileActivity extends AppCompatActivity {
      TextInputEditText FullName_et, Email_et, Password_et;
      Button update_btn, LogOut_btn, deleteAccount_btn;
      boolean fromHome , fromScan, fromResult;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +43,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
         FullName_et = findViewById(R.id.Full_name_et);
         Email_et = findViewById(R.id.Email_et);
         Password_et = findViewById(R.id.Pass_et);
@@ -66,34 +59,29 @@ public class ProfileActivity extends AppCompatActivity {
         fromResult = getIntent().getBooleanExtra("fromResult", true);
         Log.d("ProfileActivity", "fromHome flag: " + fromHome);
 
-
-
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent;
                 if (fromHome) {
-
                     Log.d("ProfileActivity", "Navigating back to HomeActivity");
                     intent = new Intent(ProfileActivity.this, HomeActivity.class);
-                } else if(fromScan) {
 
+                } else if(fromScan) {
                     Log.d("ProfileActivity", "Navigating to ScanActivity");
                     intent = new Intent(ProfileActivity.this, ScanActivity.class );
-                } else if(fromResult) {
 
+                } else if(fromResult) {
                     Log.d("ProfileActivity", "Navigating to ResultActivity");
                     intent = new Intent(ProfileActivity.this, ResultActivity.class );
+
                 } else {
-
                     intent = new Intent(ProfileActivity.this, ResultActivity2.class );
-
                 }
                 startActivity(intent);
                 finish();
             }
-
         });
 
         update_btn.setOnClickListener(view -> {
@@ -106,21 +94,17 @@ public class ProfileActivity extends AppCompatActivity {
                 return;
 
             }
-
             updateProfile(FullName, Email, Password);
 
-                });
+        });
 
         deleteAccount_btn.setOnClickListener(view -> deleteAccount());
-
-       LogOut_btn.setOnClickListener(view -> logOut());
-       loadUserProfile();
+        LogOut_btn.setOnClickListener(view -> logOut());
+        loadUserProfile();
 
     }
-
     private void updateProfile(String fullName, String email, String password) {
         FirebaseUser user = mAuth.getCurrentUser();
-
         if (user == null) {
             Toast.makeText(this, "No user is logged in.", Toast.LENGTH_SHORT).show();
             return;
@@ -157,24 +141,15 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     });
         }
-
-
     }
-
     private void logOut(){
-
         mAuth.signOut();
-
         Toast.makeText(ProfileActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
 
-        // Redirect to LoginActivity
         Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
         startActivity(intent);
-        finish();  // Close HomeActivity
-
+        finish();
     }
-
-
     private void deleteAccount() {
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -182,10 +157,8 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "No user is logged in.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         String userId = user.getUid();
 
-        // Step 1: Delete the user's data from Firestore
         db.collection("users").document(userId).delete()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -193,72 +166,33 @@ public class ProfileActivity extends AppCompatActivity {
                         user.delete()
                                 .addOnCompleteListener(deleteTask -> {
                                     if (deleteTask.isSuccessful()) {
-                                        Toast.makeText(ProfileActivity.this, "Account deleted successfully.", Toast.LENGTH_SHORT).show();
-                                        // Redirect to the main page
+                                        Toast.makeText(ProfileActivity.this, "Account deleted successfully.",
+                                                Toast.LENGTH_SHORT).show();
                                         redirectToMainPage();
                                     } else {
-                                        Toast.makeText(ProfileActivity.this, "Failed to delete account: " + deleteTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProfileActivity.this, "Failed to delete account: " + deleteTask.getException().getMessage(),
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } else {
-                        Toast.makeText(ProfileActivity.this, "Failed to delete user data: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Failed to delete user data: " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
     private void redirectToMainPage() {
         Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
 
-
-
-        // Clear activity stack to prevent returning back
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
-
-   /* private void deleteAccount(){
-
-        FirebaseUser userAcc = mAuth.getCurrentUser();
-
-        if (userAcc == null) {
-            Toast.makeText(this, "No user is logged in.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String userId = userAcc.getUid();
-
-        db.collection("users").document(userId).delete()
-                .addOnSuccessListener(aVoid -> {
-
-                    userAcc.delete()
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(ProfileActivity.this, "Account deleted successfully.", Toast.LENGTH_SHORT).show();
-
-                                    Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(ProfileActivity.this, "Failed to delete account: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(ProfileActivity.this, "Failed to delete user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-
-    }*/
-
     private void loadUserProfile() {
         FirebaseUser user = mAuth.getCurrentUser();
-
         if (user == null) {
             Toast.makeText(this, "No user is logged in.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         String userId = user.getUid();
 
         db.collection("users").document(userId).get()
@@ -267,8 +201,6 @@ public class ProfileActivity extends AppCompatActivity {
                         String fullName = documentSnapshot.getString("fullName");
                         String email = documentSnapshot.getString("email");
                         String password = documentSnapshot.getString("password");
-
-
 
                         FullName_et.setText(fullName);
                         Email_et.setText(email);

@@ -1,0 +1,64 @@
+ <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#FFEBE7"
+     >
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Edit Users"
+           android:layout_gravity="center"
+           android:textSize="45sp"
+           android:textStyle="bold|italic"
+           android:textColor="#590004"
+           android:layout_marginBottom="20dp"
+           android:layout_marginTop="30dp"
+
+           />
+
+
+
+
+
+        <EditText
+            android:id="@+id/fullNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_margin="20dp"
+            />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_margin="20dp"
+            />
+
+     <Button
+         android:id="@+id/saveButton"
+         android:layout_width="match_parent"
+         android:layout_height="51dp"
+         android:layout_gravity="center"
+         android:layout_margin="20dp"
+         android:layout_marginStart="10dp"
+         android:layout_marginEnd="10dp"
+         android:text="Save"
+         android:textSize="24sp"
+         android:textStyle="normal" />
+    </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.graduation_project;
+package com.example.Breast_Cancer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,15 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,8 +26,6 @@ import java.util.Map;
 
 
 public class SignUpActivity extends AppCompatActivity {
-
-
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     TextInputEditText FullName_et, Email_et, Password_et;
@@ -49,7 +44,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
         back_btn = findViewById(R.id.back_icon);
         FullName_et = findViewById(R.id.full_name_field);
         Email_et = findViewById(R.id.mail_field);
@@ -73,8 +67,8 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(SignUpActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             registerUser(fullName, email, password);
+
         });
     }
 
@@ -84,9 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             FirebaseUser user = mAuth.getCurrentUser();
-
                             // email  Verification
                             if (user != null) {
                                 user.sendEmailVerification()
@@ -97,7 +89,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                     Toast.makeText(SignUpActivity.this,
                                                             "Verification email sent to " + user.getEmail(),
                                                             Toast.LENGTH_SHORT).show();
-
                                                 } else {
                                                     Toast.makeText(SignUpActivity.this,
                                                             "Failed to send verification email.",
@@ -115,7 +106,6 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
     }
-
     private void saveUserToFirestore(FirebaseUser user, String fullName) {
         if (user == null) return;
 
@@ -123,7 +113,6 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("fullName", fullName);
         userMap.put("email", user.getEmail());
-
 
         db.collection("users").document(userId).set(userMap)
                 .addOnSuccessListener(aVoid -> {

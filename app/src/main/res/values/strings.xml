@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Graduation_Project</string>
+    <string name="app_name">Breast_Cancer</string>
     <string name="start_button">Get Started</string>
     <string name="first_button">Get Started</string>
     <string name="log_in">Log In</string>
@@ -63,6 +63,9 @@
     <string name="update">Update</string>
     <string name="log_out">Log Out</string>
     <string name="delete_account">delete account</string>
+    <string name="admin">Admin Panel</string>
+    <string name="add_a_new_user">Add a new user</string>
+    <string name="go_to_admin_panel">Go to Admin Panel</string>
 
 
 </resources>

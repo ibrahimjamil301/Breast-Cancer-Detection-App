@@ -1,4 +1,4 @@
-package com.example.graduation_project;
+package com.example.Breast_Cancer;
 
 import org.junit.Test;
 

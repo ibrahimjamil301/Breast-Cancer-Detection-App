@@ -139,6 +139,8 @@
     tools:ignore="ContentDescription"
     />
 
+
+
     <ImageView
     android:id="@+id/profile_icon"
     android:layout_width="40dp"
@@ -151,4 +153,23 @@
     tools:ignore="ContentDescription"
     />
 
+    <Button
+        android:id="@+id/btn_Admin_Panel"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="@string/go_to_admin_panel"
+        android:textColor="@color/pink_dark"
+        android:textSize="20sp"
+        tools:ignore="MissingConstraints"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/des4"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
+        android:visibility="gone"
+
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

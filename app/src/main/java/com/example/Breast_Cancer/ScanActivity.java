@@ -1,6 +1,7 @@
-package com.example.graduation_project;
+package com.example.Breast_Cancer;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,29 +27,14 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import com.example.graduation_project.ImageUploader;
-import com.example.graduation_project.UploadCallback;
+import android.Manifest;
 
 
 public class ScanActivity extends AppCompatActivity {
-
-      String classificationResult = null;
-
+     String classificationResult = null;
      private static final int CAMERA_REQUEST_CODE = 100;
-     private static final int GALLERY_REQUEST_CODE = 200;
+     private static final int PERMISSION_REQUEST_CODE = 100;
+     private static final int GALLERY_REQUEST_CODE = 1001;
      Button Start_btn ;
      TextView captureImgBtn;
      ImageView home_btn,profile_btn, imageView;
@@ -64,28 +52,13 @@ public class ScanActivity extends AppCompatActivity {
 
         captureImgBtn = findViewById(R.id.capture_img);
         imageView = findViewById(R.id.upload_area);
-     //   Test_btn = findViewById(R.id.test_btn);
         Start_btn = findViewById(R.id.start_btn);
         home_btn = findViewById(R.id.home_icon);
         profile_btn = findViewById(R.id.profile_icon);
 
-        /*
-
-        Test_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ScanActivity.this,ResultActivity2.class);
-                startActivity(intent);
-
-            }
-        });
-
-        */
-
         Start_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // التحقق أولاً: إذا النتيجة فارغة أو لم يتم تعيينها
                 if (classificationResult == null || classificationResult.trim().isEmpty()) {
                     Toast.makeText(ScanActivity.this,
                             "No result yet! Please capture an image or wait a while.",
@@ -93,26 +66,21 @@ public class ScanActivity extends AppCompatActivity {
                     return;
                 }
 
-                // التحقق من نوع النتيجة
                 if (classificationResult.equalsIgnoreCase("Benign")) {
-                    // التوجيه لـ ResultActivity
                     Intent intent = new Intent(ScanActivity.this, ResultActivity.class);
                     startActivity(intent);
 
                 } else if (classificationResult.equalsIgnoreCase("Malignant")) {
-                    // التوجيه لـ ResultActivity2
                     Intent intent = new Intent(ScanActivity.this, ResultActivity2.class);
                     startActivity(intent);
 
                 } else {
-                    // قيمة غير معروفة
                     Toast.makeText(ScanActivity.this,
                             "Unknown value: " + classificationResult,
                             Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
 
         home_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +106,6 @@ public class ScanActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
     private void showImageSourceDialog() {
 
@@ -150,14 +116,13 @@ public class ScanActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-
-                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+                            checkPermissionsAndOpenCamera();
 
                         } else if (which == 1) {
-
                             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE);
+                            Log.d("GalleryDebug", "Gallery intent started.");
+
                         }
                     }
                 });
@@ -167,62 +132,57 @@ public class ScanActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("onActivityResult", "Request Code: " + requestCode + ", Result Code: " + resultCode);
+
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST_CODE) {
+                if (data != null && data.getExtras() != null) {
 
-                if (data != null) {
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        Bitmap imageBitmap = (Bitmap) extras.get("data");
-                        imageView.setImageBitmap(imageBitmap);
+                    Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 
-                        sendImage(imageBitmap);
-
-
-                    }
+                        if (imageBitmap != null) {
+                            imageView.setImageBitmap(imageBitmap);
+                            sendImage(imageBitmap);
+                        } else {
+                            Toast.makeText(this, "Failed to capture image.", Toast.LENGTH_SHORT).show();
+                        }
                 }
             } else if (requestCode == GALLERY_REQUEST_CODE) {
 
-                Uri selectedImage = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                    imageView.setImageBitmap(bitmap);
+                if (data != null ) {
+                    Uri selectedImage = data.getData();
+                    Log.d("GalleryDebug", "Selected Image URI: " + selectedImage);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        imageView.setImageBitmap(bitmap);
+                        sendImage(bitmap);
 
-                    sendImage(bitmap);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.e("GalleryError", "Error processing gallery image", e);
+                    }
                 }
+            }
+            else {
+                Toast.makeText(this, "Action canceled.", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
     private void sendImage(Bitmap bitmap) {
-        // مثال على رابط السيرفر
-        String serverUrl = "http://192.168.1.7:5000/predict";
 
+        String serverUrl = "http://192.168.1.10:5000/predict";
         ImageUploader.uploadImageAsync(bitmap, serverUrl, new UploadCallback() {
             @Override
             public void onSuccess(String responseBody) {
-                // ينفّذ في Thread الخلفية (تحذير)
-                // لو أردت تعديل الواجهة (UI)، استخدم runOnUiThread
                 runOnUiThread(() -> {
-                    // معالجة النتيجة
+
                     Toast.makeText(ScanActivity.this,
                             "Upload success: " + responseBody,
                             Toast.LENGTH_LONG).show();
                     try {
                         JSONObject json = new JSONObject(responseBody);
-                        String label = json.optString("label", "");
+                        String prediction = json.optString("prediction", "");
                         double confidence = json.optDouble("confidence", 0.0);
-
-                        // تعيين قيمة classificationResult اعتمادًا على label
-                        classificationResult = label; // قد تكون "Benign" أو "Malignant"
-
-                        // إذا أردت إظهار القيمة
-                        // Toast.makeText(ScanActivity.this,
-                        //         "classificationResult = " + classificationResult,
-                        //         Toast.LENGTH_SHORT).show();
+                        classificationResult = prediction;
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -230,19 +190,11 @@ public class ScanActivity extends AppCompatActivity {
                                 "JSON parsing error: " + e.getMessage(),
                                 Toast.LENGTH_LONG).show();
                     }
-
-                    // يمكنك هنا أو في زرّ آخر استخدام classificationResult للانتقال:
-                    // if ("Benign".equalsIgnoreCase(classificationResult)) { ... }
                 });
             }
-
-                    // مثال: لو لديك parse JSON
-                    // then navigate to other activity, etc.
-
-
             @Override
             public void onError(Exception e) {
-                // نفس الشيء، نفذ على الرئيسية لو أردت:
+
                 runOnUiThread(() -> {
                     Toast.makeText(ScanActivity.this,
                             "Upload error: " + e.getMessage(),
@@ -251,9 +203,31 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
     }
+    private void checkPermissionsAndOpenCamera() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_CODE);
+        } else {
+            openCamera();
+        }
+    }
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+    }
 
-
-
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Toast.makeText(this, "Camera permission is required to use this feature.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

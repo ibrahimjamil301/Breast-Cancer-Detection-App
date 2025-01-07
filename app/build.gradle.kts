@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.graduation_project"
+    namespace = "com.example.Breast_Cancer"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.graduation_project"
+        applicationId = "com.example.Breast_Cancer"
         minSdk = 25
         targetSdk = 34
         versionCode = 1

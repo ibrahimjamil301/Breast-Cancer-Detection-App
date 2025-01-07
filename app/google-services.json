@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:519828319685:android:f766f51730ff4bb2b72fac",
+        "android_client_info": {
+          "package_name": "com.example.Breast_Cancer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDFJRVH5SzZbnYiftCfqkgb60iuQRJxrQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:519828319685:android:f13de9379260e91cb72fac",
         "android_client_info": {
           "package_name": "com.example.graduation_project"
