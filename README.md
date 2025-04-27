@@ -1,10 +1,10 @@
 # 🩺 Breast Cancer Detection App
 
-📖 Introduction
+## 📖 Introduction
 Welcome to the Breast Cancer Detection App — an Android application designed to assist users in identifying potential breast cancer symptoms through medical image analysis.
 Our app leverages the power of AI to analyze images and deliver fast and accurate diagnostic feedback!
 
-# 🚀 Features
+## 🚀 Features
 📷 Upload medical images from your device.
 
 🧠 AI-powered breast cancer detection.
@@ -13,16 +13,19 @@ Our app leverages the power of AI to analyze images and deliver fast and accurat
 
 🖌️ Simple, clean, and user-friendly interface.
 
-🛠️ Tech Stack
-Java — Core development language.
+## 🛠️ Tech Stack
 
-Android Studio — Main IDE for building and testing.
+* Java — Core development language.
 
-XML — Layout and UI designs.
+* Android Studio — Main IDE for building and testing.
 
-Firebase / Cloud Storage 
+* XML — Layout and UI designs.
 
-# 📂 Project Structure
+* Firebase / Cloud Storage 
+
+## 📂 Project Structure
+
+
 ```
 Android-App/
 │
@@ -42,17 +45,24 @@ Android-App/
 ├── settings.gradle.kts
 └── README.md
 ```
-# 📲 Getting Started
+
+## 📲 Getting Started
+
 1. Clone the repository:
+
 ```
 git clone https://github.com/ibrahimjamil301/Android-App.git
+
 ```
 2. Open the project in Android Studio.
+
 3. Sync your Gradle files.
+ 
 4. Connect your Android device or open an emulator.
+ 
 5. Press Run ▶️ to start the app.
 
-# 📸 Screenshots ::
+## 📸 Screenshots ::
 
 ### Collection Figma:
 
@@ -61,6 +71,15 @@ git clone https://github.com/ibrahimjamil301/Android-App.git
         <img src="https://github.com/user-attachments/assets/eedf8459-28f2-4cfc-ac56-201594a99914" width="410px" />
 </div>
 
+## 🧠 Contribution
+
+* Contributions, issues, and feature requests are welcome!
+  
+* Feel free to Fork the repo and submit a Pull Request
+
+## 📃 License
+
+* This project is licensed under the MIT License
 
 
 
